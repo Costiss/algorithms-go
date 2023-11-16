@@ -69,6 +69,7 @@ func TestPrepend(t *testing.T) {
 
 		assert.Equal(t, &node, newHead)
 		assert.Equal(t, &head, newHead.Next)
+		assert.Equal(t, head.Prev, newHead)
 	})
 }
 
@@ -79,11 +80,13 @@ func TestAppend(t *testing.T) {
 		node := linkedlist.ListNode{
 			Value: 9,
 		}
+		oldLast := linkedlist.GetLastNode(&head)
 
 		linkedlist.Append(&head, &node)
 
 		last := linkedlist.GetLastNode(&head)
 
 		assert.Equal(t, &node, last)
+		assert.Equal(t, oldLast, last.Prev)
 	})
 }

@@ -2,6 +2,7 @@ package linkedlist
 
 type ListNode struct {
 	Value int
+	Prev  *ListNode
 	Next  *ListNode
 }
 
@@ -32,6 +33,7 @@ func Append(head *ListNode, newNode *ListNode) *ListNode {
 	last := GetLastNode(head)
 
 	last.Next = newNode
+	newNode.Prev = last
 
 	return head
 }
@@ -45,6 +47,7 @@ func Prepend(head *ListNode, newNode *ListNode) *ListNode {
 	}
 
 	newNode.Next = head
+	head.Prev = newNode
 
 	return newNode
 }
