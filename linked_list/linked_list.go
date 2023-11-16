@@ -24,7 +24,7 @@ func Find(head *ListNode, valueToFind int) (value *int) {
 
 }
 
-func AddNode(head *ListNode, newNode *ListNode) *ListNode {
+func PushEnd(head *ListNode, newNode *ListNode) *ListNode {
 	if head == nil {
 		return nil
 	}
@@ -33,20 +33,20 @@ func AddNode(head *ListNode, newNode *ListNode) *ListNode {
 
 	last.Next = newNode
 
-	return newNode
+	return head
 }
 
-func ChangeHead(head *ListNode, newHead *ListNode) *ListNode {
+func PushFront(head *ListNode, newNode *ListNode) *ListNode {
 	if head == nil {
-		return newHead
+		return newNode
 	}
-	if newHead == nil {
+	if newNode == nil {
 		return head
 	}
 
-	newHead.Next = head
+	newNode.Next = head
 
-	return newHead
+	return newNode
 }
 
 func GetLastNode(startingNode *ListNode) *ListNode {
