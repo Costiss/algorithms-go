@@ -57,7 +57,7 @@ func TestFind(t *testing.T) {
 	})
 }
 
-func TestPushFront(t *testing.T) {
+func TestPrepend(t *testing.T) {
 	t.Run("should add node to the beginning", func(t *testing.T) {
 		head := getHead()
 
@@ -65,14 +65,14 @@ func TestPushFront(t *testing.T) {
 			Value: 9,
 		}
 
-		newHead := linkedlist.PushFront(&head, &node)
+		newHead := linkedlist.Prepend(&head, &node)
 
 		assert.Equal(t, &node, newHead)
 		assert.Equal(t, &head, newHead.Next)
 	})
 }
 
-func TestPushEnd(t *testing.T) {
+func TestAppend(t *testing.T) {
 	t.Run("should add node to the end", func(t *testing.T) {
 		head := getHead()
 
@@ -80,7 +80,7 @@ func TestPushEnd(t *testing.T) {
 			Value: 9,
 		}
 
-		linkedlist.PushEnd(&head, &node)
+		linkedlist.Append(&head, &node)
 
 		last := linkedlist.GetLastNode(&head)
 

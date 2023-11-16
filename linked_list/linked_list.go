@@ -24,7 +24,7 @@ func Find(head *ListNode, valueToFind int) (value *int) {
 
 }
 
-func PushEnd(head *ListNode, newNode *ListNode) *ListNode {
+func Append(head *ListNode, newNode *ListNode) *ListNode {
 	if head == nil {
 		return nil
 	}
@@ -36,7 +36,7 @@ func PushEnd(head *ListNode, newNode *ListNode) *ListNode {
 	return head
 }
 
-func PushFront(head *ListNode, newNode *ListNode) *ListNode {
+func Prepend(head *ListNode, newNode *ListNode) *ListNode {
 	if head == nil {
 		return newNode
 	}
