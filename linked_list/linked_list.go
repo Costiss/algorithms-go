@@ -1,67 +1,100 @@
 package linkedlist
 
+type DoublyLinkedList struct {
+	Head   *ListNode
+	Length int
+}
+
+func NewDoublyLinkedList() *DoublyLinkedList {
+	return &DoublyLinkedList{
+		Head:   nil,
+		Length: 0,
+	}
+}
+
 type ListNode struct {
-	Value int
+	Value any
 	Prev  *ListNode
 	Next  *ListNode
 }
 
-func Find(head *ListNode, valueToFind int) (value *int) {
-	if head == nil {
+func (list *DoublyLinkedList) Find(value int) *ListNode {
+	if list.Head == nil {
 		return nil
 	}
 
-	if head.Value == valueToFind {
-		return &head.Value
+	current := list.Head
+
+	for i := 0; i < list.Length; i++ {
+		if current.Value == value {
+			return current
+		}
+
+		if current.Next == nil {
+			return nil
+		}
+
+		current = current.Next
 	}
 
-	if head.Next == nil {
-		return nil
-	}
-
-	head = head.Next
-
-	return Find(head, valueToFind)
-
+	return nil
 }
 
-func Append(head *ListNode, newNode *ListNode) *ListNode {
-	if head == nil {
+func (list *DoublyLinkedList) Append(value any) *ListNode {
+	if value == nil {
+		return nil
+	}
+	node := &ListNode{Value: value}
+
+	list.Length += 1
+
+	if list.Head == nil {
+		list.Head = node
+		return node
+	}
+
+	last := list.GetLastNode()
+
+	last.Next = node
+	node.Prev = last
+
+	return node
+}
+
+func (list *DoublyLinkedList) Prepend(value any) *ListNode {
+	if value == nil {
+		return nil
+	}
+	node := &ListNode{Value: value}
+
+	list.Length += 1
+
+	if list.Head == nil {
+		list.Head = node
+		return node
+	}
+
+	node.Next = list.Head
+	list.Head.Prev = node
+	list.Head = node
+
+	return node
+}
+
+func (list *DoublyLinkedList) GetLastNode() *ListNode {
+	if list.Head == nil {
 		return nil
 	}
 
-	last := GetLastNode(head)
+	current := list.Head
 
-	last.Next = newNode
-	newNode.Prev = last
+	for i := 0; i < list.Length; i++ {
+		if current.Next == nil {
+			return current
+		}
 
-	return head
-}
-
-func Prepend(head *ListNode, newNode *ListNode) *ListNode {
-	if head == nil {
-		return newNode
-	}
-	if newNode == nil {
-		return head
+		current = current.Next
 	}
 
-	newNode.Next = head
-	head.Prev = newNode
-
-	return newNode
-}
-
-func GetLastNode(startingNode *ListNode) *ListNode {
-	if startingNode == nil {
-		return nil
-	}
-
-	if startingNode.Next == nil {
-		return startingNode
-	}
-
-	startingNode = startingNode.Next
-
-	return GetLastNode(startingNode)
+	return nil
 }

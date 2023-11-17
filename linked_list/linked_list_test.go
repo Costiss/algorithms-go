@@ -7,51 +7,80 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func getHead() linkedlist.ListNode {
-	var second = linkedlist.ListNode{
-		Value: 2,
-	}
+func getList() *linkedlist.DoublyLinkedList {
+	list := linkedlist.NewDoublyLinkedList()
 
-	var first = linkedlist.ListNode{
-		Value: 1,
-		Next:  &second,
-	}
+	list.Append(0)
 
-	return linkedlist.ListNode{
-		Value: 0,
-		Next:  &first,
-	}
+	list.Append(1)
+
+	list.Append(2)
+
+	return list
 }
 
-func TestGetLastNodet(t *testing.T) {
+func TestAppend(t *testing.T) {
+	t.Run("should add node to the end", func(t *testing.T) {
+		list := getList()
 
-	head := getHead()
+		oldLast := list.GetLastNode()
 
-	last := linkedlist.GetLastNode(&head)
+		last := list.Append(9)
 
-	assert.Equal(t, last.Value, 2)
+		assert.Equal(t, list.GetLastNode(), last)
+		assert.Equal(t, oldLast, last.Prev)
+	})
+
+	t.Run("should not add length if node is nil", func(t *testing.T) {
+		list := getList()
+		listLength := list.Length
+
+		node := list.Append(nil)
+
+		assert.Nil(t, node)
+		assert.EqualValues(t, listLength, list.Length)
+	})
+
+	t.Run("should replace head if list is empty", func(t *testing.T) {
+		list := linkedlist.NewDoublyLinkedList()
+
+		node := list.Append(0)
+
+		assert.Equal(t, node, list.Head)
+		assert.EqualValues(t, list.Length, 1)
+	})
+}
+
+func TestGetLastNode(t *testing.T) {
+	list := getList()
+
+	last := list.GetLastNode()
+
+	assert.EqualValues(t, last.Value, 2)
 }
 
 func TestFind(t *testing.T) {
 
 	t.Run("should find existing value", func(t *testing.T) {
-		head := getHead()
+		list := getList()
 
-		found := linkedlist.Find(&head, 1)
+		found := list.Find(1)
 
-		assert.Equal(t, 1, *found)
+		assert.EqualValues(t, 1, found.Value)
 	})
 
 	t.Run("should return nil if value not in the list", func(t *testing.T) {
-		head := getHead()
+		list := getList()
 
-		found := linkedlist.Find(&head, 9)
+		found := list.Find(9)
 
 		assert.Nil(t, found)
 	})
 
 	t.Run("should return nil if head nil", func(t *testing.T) {
-		found := linkedlist.Find(nil, 9)
+		list := linkedlist.NewDoublyLinkedList()
+
+		found := list.Find(1)
 
 		assert.Nil(t, found)
 	})
@@ -59,34 +88,33 @@ func TestFind(t *testing.T) {
 
 func TestPrepend(t *testing.T) {
 	t.Run("should add node to the beginning", func(t *testing.T) {
-		head := getHead()
+		list := getList()
 
-		node := linkedlist.ListNode{
-			Value: 9,
-		}
+		oldHead := list.Head
 
-		newHead := linkedlist.Prepend(&head, &node)
+		node := list.Prepend(9)
 
-		assert.Equal(t, &node, newHead)
-		assert.Equal(t, &head, newHead.Next)
-		assert.Equal(t, head.Prev, newHead)
+		assert.Equal(t, node, list.Head)
+		assert.Equal(t, oldHead, node.Next)
+		assert.Equal(t, oldHead.Prev, node)
+		assert.EqualValues(t, list.Length, 4)
 	})
-}
 
-func TestAppend(t *testing.T) {
-	t.Run("should add node to the end", func(t *testing.T) {
-		head := getHead()
+	t.Run("should replace head if list is empty", func(t *testing.T) {
+		list := linkedlist.NewDoublyLinkedList()
 
-		node := linkedlist.ListNode{
-			Value: 9,
-		}
-		oldLast := linkedlist.GetLastNode(&head)
+		node := list.Prepend(0)
 
-		linkedlist.Append(&head, &node)
+		assert.Equal(t, node, list.Head)
+	})
 
-		last := linkedlist.GetLastNode(&head)
+	t.Run("should not add length if node is nil", func(t *testing.T) {
+		list := getList()
+		listLength := list.Length
 
-		assert.Equal(t, &node, last)
-		assert.Equal(t, oldLast, last.Prev)
+		node := list.Prepend(nil)
+
+		assert.Nil(t, node)
+		assert.EqualValues(t, listLength, list.Length)
 	})
 }
